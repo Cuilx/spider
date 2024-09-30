@@ -4,11 +4,11 @@
 #include <Wire.h>
 #include "LegControl_task.h"
 #include "SCServo.h"
-#include <PS4Controller.h>
-#include "esp_bt_main.h"
-#include "esp_bt_device.h"
-#include "esp_gap_bt_api.h"
-#include "esp_err.h"
+// #include <PS4Controller.h>
+// #include "esp_bt_main.h"
+// #include "esp_bt_device.h"
+// #include "esp_gap_bt_api.h"
+// #include "esp_err.h"
 typedef Sentry2 Sentry;
 #define VISION_TYPE Sentry::kVisionBlob
 Sentry sentry;
@@ -106,10 +106,14 @@ void findBlock(uint8_t xMin, uint8_t xMax, uint8_t yMin, uint8_t yMax)
 {
   while (!(x < xMax && x > xMin && y < yMax && y > yMin))
   {
-    int xVelocity = (x < xMin) ? -60 : (x > xMax) ? 60
-                                                  : 0;
-    int yVelocity = (y < yMin) ? 60 : (y > yMax) ? -60
-                                                 : 0;
+    int xVelocity = (x < xMin) ? (x - xMin) / 1.5 : (x > xMax) ? (x - xMax) / 1.5
+                                                             : 0;
+    int yVelocity = (y < yMin) ? (yMin - y) / 1.5 : (y > yMax) ? (yMax - y) / 1.5
+                                                             : 0;
+    // 限制xVelocity和yVelocity的绝对值不小于10
+    if (abs(xVelocity) < 10 && xVelocity != 0) xVelocity = (xVelocity > 0) ? 10 : -10;
+    if (abs(yVelocity) < 10 && yVelocity != 0) yVelocity = (yVelocity > 0) ? 10 : -10;
+                                                             
     hexapod.velocity_cal(xVelocity, yVelocity, 0);
     hexapodMove();
   }
@@ -144,14 +148,14 @@ void seekBlock(int x_min, int x_max, int y_min, int y_max)
 
 void setup()
 {
-  PS4.begin("ba:ba:ca:ea:02:01");
-  uint8_t pairedDeviceBtAddr[20][6];
-  int count = esp_bt_gap_get_bond_device_num();
-  esp_bt_gap_get_bond_device_list(&count, pairedDeviceBtAddr);
-  for (int i = 0; i < count; i++)
-  {
-    esp_bt_gap_remove_bond_device(pairedDeviceBtAddr[i]);
-  }
+  // PS4.begin("ba:ba:ca:ea:02:01");
+  // uint8_t pairedDeviceBtAddr[20][6];
+  // int count = esp_bt_gap_get_bond_device_num();
+  // esp_bt_gap_get_bond_device_list(&count, pairedDeviceBtAddr);
+  // for (int i = 0; i < count; i++)
+  // {
+  //   esp_bt_gap_remove_bond_device(pairedDeviceBtAddr[i]);
+  // }
   sentry_err_t err = SENTRY_OK;
   Wire.begin();
   while (SENTRY_OK != sentry.begin(&Wire))
@@ -181,13 +185,9 @@ void setup()
   hexapodStop();
   hexapod.mode_select(3);
   seekBlock(76, 80, 82, 86);
-  arm.servoMove(20, 240, 1000);
-  delay(3.5 * 1000);
-  arm.servoMove(20, 150, 1000);
-  delay(1 * 1000);
-  hexapodStop();
-  hexapod.mode_select(3);
-  posX=posY=posZ=0;
+  arm.servoMove(19, 220, 1000);
+  delay(3000);
+  arm.servoMove(19, 150, 1000);
 }
 void loop()
 {

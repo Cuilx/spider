@@ -166,7 +166,7 @@ void Hexapod::Init(uint8_t mode)
 			arm.servoMove(3 * i + 2, 105, 1000); // 初始化第二关节角度为130度
 			arm.servoMove(3 * i + 3, 105, 1000); // 初始化第三关节角度为140度
 		}
-
+		arm.servoMove(19,150,1000);
 		delay(1000); // 延时等待舵机移动完成
 	}
 	if (flag == 1 && mode == 0)
