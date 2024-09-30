@@ -176,47 +176,19 @@ void setup()
   gait_prg.Init();
   delay(100);
   hexapod.Init(0);
-  // hexapod.mode_select(1);
-  // findBlock(60, 70, 70, 80);
-  // hexapodStop();
-  // hexapod.mode_select(3);
-  // seekBlock(76, 80, 82, 86);
-  // arm.servoMove(20, 240, 1000);
-  // delay(3.5 * 1000);
-  // arm.servoMove(20, 150, 1000);
-  // delay(1 * 1000);
-  // hexapodStop();
+  hexapod.mode_select(1);
+  findBlock(60, 70, 70, 80);
+  hexapodStop();
+  hexapod.mode_select(3);
+  seekBlock(76, 80, 82, 86);
+  arm.servoMove(20, 240, 1000);
+  delay(3.5 * 1000);
+  arm.servoMove(20, 150, 1000);
+  delay(1 * 1000);
+  hexapodStop();
   hexapod.mode_select(3);
   posX=posY=posZ=0;
 }
 void loop()
 {
-
-  if (PS4.Up())
-  {
-    posY = posY + 3;
-  }
-  if (PS4.Down())
-  {
-    posY = posY - 3;
-  }
-  if (PS4.Left())
-  {
-    posX = posX - 3;
-  }
-  if (PS4.Right())
-  {
-    posX = posX + 3;
-  }
-  if (PS4.Square())
-  {
-    posZ = posZ + 3;
-  }
-  if (PS4.Cross())
-  {
-    posZ = posZ - 3;
-  }
-  hexapod.body_position_cal(posX, posY, posZ);
-  // Mpu.mpu_cab();
-  hexapodMove();
 }
