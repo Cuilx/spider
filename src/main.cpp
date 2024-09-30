@@ -191,4 +191,14 @@ void setup()
 }
 void loop()
 {
+  if (taskFlag == 1)
+  {
+    vTaskSuspend(myTaskHandle);
+    taskFlag = 0;
+  }
+  else
+  {
+    vTaskResume(myTaskHandle);
+    taskFlag = 1;
+  } 
 }
