@@ -13,12 +13,12 @@ static Thetas ikine(Position3 &pos);
 void Gait_prg::Init()
 {
     // 计算机械腿相对于起始端的末端坐标
-    Pws[0] = fkine(Thetas(PI / 4, THETA_STAND_2, THETA_STAND_3));
-    Pws[1] = fkine(Thetas(0, THETA_STAND_2, THETA_STAND_3));
-    Pws[2] = fkine(Thetas(-PI / 4, THETA_STAND_2, THETA_STAND_3));
-    Pws[3] = fkine(Thetas(3 * PI / 4, THETA_STAND_2, THETA_STAND_3));
-    Pws[4] = fkine(Thetas(PI, THETA_STAND_2, THETA_STAND_3));
-    Pws[5] = fkine(Thetas(5 * PI / 4, THETA_STAND_2, THETA_STAND_3));
+    Pws[0] = fkine(Thetas(PI / 4, theta_stand_2, theta_stand_3));
+    Pws[1] = fkine(Thetas(0, theta_stand_2, theta_stand_3));
+    Pws[2] = fkine(Thetas(-PI / 4, theta_stand_2, theta_stand_3));
+    Pws[3] = fkine(Thetas(3 * PI / 4, theta_stand_2, theta_stand_3));
+    Pws[4] = fkine(Thetas(PI, theta_stand_2, theta_stand_3));
+    Pws[5] = fkine(Thetas(5 * PI / 4, theta_stand_2, theta_stand_3));
     // 默认站立坐标，这里copy一份
     memcpy(Pws_default, Pws, sizeof(Position3) * 6);
     // 计算各个机械腿起始端相对于机器人中心的坐标
@@ -56,8 +56,8 @@ static Thetas ikine(Position3 &pos)
     alpha1 = acos((pow(LEG_LEN2, 2) + pow(Lr, 2) - pow(LEG_LEN3, 2)) / (2 * Lr * LEG_LEN2));
     alpha2 = acos((pow(Lr, 2) + pow(LEG_LEN3, 2) - pow(LEG_LEN2, 2)) / (2 * Lr * LEG_LEN3));
     Thetas thetas(atan2(pos1.y, pos1.x), alpha1 - alpha_r, -(alpha1 + alpha2));
-    value_limit(thetas.angle[1], MIN_JOINT2_RAD, MAX_JOINT2_RAD);
-    value_limit(thetas.angle[2], MIN_JOINT3_RAD, MAX_JOINT3_RAD);
+    // value_limit(thetas.angle[1], MIN_JOINT2_RAD, MAX_JOINT2_RAD);
+    // value_limit(thetas.angle[2], MIN_JOINT3_RAD, MAX_JOINT3_RAD);
     return thetas;
 }
 
@@ -76,7 +76,7 @@ void Gait_prg::set_body_rotate_angle(Position3 &rotate_angle)
 
 /*
  *@brief 通过机身旋转角度，计算机械腿末端位置
- *@param point 腿末端相对于起始端的坐标，
+ *@param point 腿末端相对于起始端的坐标
  *@param index 腿的编号
  */
 Position3 Gait_prg::hexapod_rotate(Position3 &point, uint32_t index)
@@ -180,7 +180,7 @@ void Gait_prg::gait_proggraming()
     {
         Vec_CEN2leg_ends[i] = Pws[i] + P_legs[i] - CEN;                                         // 计算圆心到每个腿部末端的向量
         angle_off[i] = atan2(Vec_CEN2leg_ends[i].y, Vec_CEN2leg_ends[i].x);                     // 计算圆心与机械腿末端的夹角
-        norm_CEN2legs[i] = sqrt(pow(Vec_CEN2leg_ends[i].x, 2) + pow(Vec_CEN2leg_ends[i].y, 2)); // 计算圆心与机械腿末端的模长
+        norm_CEN2legs[i] = sqrt(pow(Vec_CEN2leg_ends[i].x, 2) + pow(Vec_CEN2leg_ends[i].y, 2)); // 计算圆心与机械腿末端的模长3333333
         Vec_Leg_Start2CEN_s[i] = CEN - P_legs[i];                                               // 计算腿部起始端到圆心起始端的向量
     }
     float max_norm_CEN2legs = 0;
@@ -200,7 +200,7 @@ void Gait_prg::gait_proggraming()
      /*********先对腿1，3，5做步态规划***********/
     static float angle_t;   // 用于计算该点的角度
     static float y_temp;    // 用于计算z轴高度的临时变量
-    static Position3 point; // 用于存储末端坐标点
+    static Position3 point; // 用于存储末端坐标点3
     for (int i = 0; i < 5; i += 2)
     {
         if (LegControl_round < N_POINTS / 2) // 0-9, 画下半圆

@@ -7,13 +7,13 @@
 #define LEG_LEN2 42.f  // 腿部第二连杆长度（单位mm）
 #define LEG_LEN3 77.f // 腿部第三连杆长度（单位mm）
 
-#define CHASSIS_LEN 406.f        // 底盘长度（y轴方向）
+#define CHASSIS_LEN 110.f        // 底盘长度（y轴方向）
 #define CHASSIS_WIDTH 90.f      // 底盘宽度（x轴方向）
 #define CHASSIS_FRONT_WIDTH 60.f // 底盘前端宽度（x轴方向）
 
 #define N_POINTS 16                  // 点的数量（必须是偶数）16
-#define THETA_STAND_2 35.0f / 180.0f * PI // 机械腿站立时最后两个关节的角度
-#define THETA_STAND_3 -90.0f / 180.0f * PI
+// #define THETA_STAND_2 35.0f / 180.0f * PI // 机械腿站立时最后两个关节的角度65，-120
+// #define THETA_STAND_3 -80.0f / 180.0f * PI
 
 #define K_CEN 500.0f     // 用于确定圆心模长的系数
 #define KR_1 1           //%用于计算步伐大小的系数
@@ -57,8 +57,11 @@ private:
     Position3 hexapod_rotate(Position3 &point, uint32_t index);
     Position3 rotate_angle; // 机体旋转角度
     float move_point();
+    float theta_stand_2; // 机械腿站立时最后两个关节的角度
+    float theta_stand_3;
 public:
     action actions[6];
+    Gait_prg() : theta_stand_2(35.0f / 180.0f * PI), theta_stand_3(-80.0f / 180.0f * PI) {}
     void Init(); // 初始化
     void CEN_and_pace_cal();
     void gait_proggraming();
@@ -67,6 +70,9 @@ public:
     void set_body_rotate_angle(Position3 &rotate_angle);
     void set_body_position(Position3 &body_pos);
     void set_velocity(Velocity &velocity);
+    void set_theta_stand_2(float theta) { theta_stand_2 = float(theta)/ 180.0f * PI; }
+    void set_theta_stand_3(float theta) { theta_stand_3 = float(theta)/ 180.0f * PI; }
+
 };
 
 #endif

@@ -75,6 +75,7 @@ public:
 	virtual int ReadInfoValue(int ID, int AddInput);//read servo type
 	virtual int SetID(u8 targID, u8 newID);//set ID
 	virtual int SetID(u8 newID);//set ID
+	void setDEV(uint8_t id,int dev);
 	void servoMove(uint8_t id, uint16_t pos, uint16_t time );
 private:
 	u8 Mem[SCSCL_PRESENT_CURRENT_H-SCSCL_PRESENT_POSITION_L+1];

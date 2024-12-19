@@ -5,7 +5,7 @@
  */
 
 #include "SCSCL.h"
-
+int servoDEV[22]={0};
 SCSCL::SCSCL()
 {
 	End = 1;
@@ -299,6 +299,12 @@ int SCSCL::ReadCurrent(int ID)
 }
 void SCSCL::servoMove(uint8_t id, uint16_t pos, uint16_t time )
 {
-  int angle =map(pos,0,300,0,1023);
+  int angle =map(pos+servoDEV[id],0,300,0,1023);
   WritePos(id, angle, time, 0);
+}
+void SCSCL::setDEV(uint8_t id,int dev){
+	if(id == 2 || id == 5 || id == 8 || id == 11 || id == 14 || id == 17 || id == 20){
+		servoDEV[id]=-dev;
+	}
+	else servoDEV[id]=dev;
 }
