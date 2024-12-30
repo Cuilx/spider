@@ -10,7 +10,8 @@
 #include "esp_gap_bt_api.h"
 #include "esp_err.h"
 typedef Sentry2 Sentry;
-#define VISION_TYPE Sentry::kVisionBlob
+// #define VISION_TYPE Sentry::kVisionBlob
+uint8_t VISION_TYPE = Sentry::kVisionBlob;
 Sentry sentry;
 sentry_object_t param = {0};
 uint8_t w, h, x, y, z;

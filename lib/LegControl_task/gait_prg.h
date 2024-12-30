@@ -3,9 +3,9 @@
 
 #include "my_math.h"
 
-#define LEG_LEN1 38.f  // 腿部第一连杆长度（单位mm）
-#define LEG_LEN2 42.f  // 腿部第二连杆长度（单位mm）
-#define LEG_LEN3 77.f // 腿部第三连杆长度（单位mm）
+#define LEG_LEN1 35.f  // 腿部第一连杆长度（单位mm）35
+#define LEG_LEN2 57.f  // 腿部第二连杆长度（单位mm）57
+#define LEG_LEN3 75.f // 腿部第三连杆长度（单位mm）75
 
 #define CHASSIS_LEN 110.f        // 底盘长度（y轴方向）
 #define CHASSIS_WIDTH 90.f      // 底盘宽度（x轴方向）
@@ -61,7 +61,7 @@ private:
     float theta_stand_3;
 public:
     action actions[6];
-    Gait_prg() : theta_stand_2(35.0f / 180.0f * PI), theta_stand_3(-80.0f / 180.0f * PI) {}
+    Gait_prg() : theta_stand_2(1.0f / 180.0f * PI), theta_stand_3(-100.0f / 180.0f * PI) {}
     void Init(); // 初始化
     void CEN_and_pace_cal();
     void gait_proggraming();

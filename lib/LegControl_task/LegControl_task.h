@@ -318,14 +318,14 @@ void Hexapod::move(uint32_t round_time)
 				arm.servoMove(servo_base_index, (reverse_angle_0 ? -1 : 1) * theta_temp.angle[0] * (i < 3 ? leftDev : rightDev) / PI * 180 + 150, round_time);
 			else
 				arm.servoMove(servo_base_index, (reverse_angle_0 ? -1 : 1) * theta_temp.angle[0] * (i < 3 ? mLeftDev : mRightDev) / PI * 180 + 150, round_time);
-			arm.servoMove(servo_base_index + 1, (reverse_angle_1 ? -1 : 1) * theta_temp.angle[1] / PI * 180 + 150, round_time);
-			arm.servoMove(servo_base_index + 2, (reverse_angle_2 ? -1 : 1) * theta_temp.angle[2] / PI * 180 + 190, round_time);
+			arm.servoMove(servo_base_index + 1, (reverse_angle_1 ? -1 : 1) * theta_temp.angle[1] / PI * 180 + 105, round_time);
+			arm.servoMove(servo_base_index + 2, (reverse_angle_2 ? -1 : 1) * theta_temp.angle[2] / PI * 180 + 195, round_time);
 		}
 		else
 		{
 			arm.servoMove(servo_base_index, (reverse_angle_0 ? -1 : 1) * theta_temp.angle[0] / PI * 180 + 150, round_time);
-			arm.servoMove(servo_base_index + 1, (reverse_angle_1 ? -1 : 1) * theta_temp.angle[1] / PI * 180 + 150, round_time);
-			arm.servoMove(servo_base_index + 2, (reverse_angle_2 ? -1 : 1) * theta_temp.angle[2] / PI * 180 + 190, round_time);
+			arm.servoMove(servo_base_index + 1, (reverse_angle_1 ? -1 : 1) * theta_temp.angle[1] / PI * 180 + 105, round_time);//105
+			arm.servoMove(servo_base_index + 2, (reverse_angle_2 ? -1 : 1) * theta_temp.angle[2] / PI * 180 + 195, round_time);//195
 		}
 	}
 }
