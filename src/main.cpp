@@ -14,7 +14,7 @@ typedef Sentry2 Sentry;
 uint8_t VISION_TYPE = Sentry::kVisionBlob;
 Sentry sentry;
 sentry_object_t param = {0};
-uint8_t w, h, x, y, z;
+uint8_t w, h, x, y, z, l;
 TaskHandle_t myTaskHandle;
 bool taskFlag = 0;
 Servo servo1;
@@ -41,16 +41,17 @@ void myTask(void *parameter)
       h = sentry.GetValue(VISION_TYPE, kHeightValue, 1);
       x = sentry.GetValue(VISION_TYPE, kXValue, 1);
       y = sentry.GetValue(VISION_TYPE, kYValue, 1);
+      l = sentry.GetValue(VISION_TYPE, kLabel, 1);
       z = 1;
     }
     else
     {
-      w = h = x = y = z = 0;
+      w = h = x = y = l = z = 0;
     }
     if (taskFlag == 1)
     {
       vTaskDelay(1000);
-      w = h = x = y = z = 0; // 合并变量赋值
+      w = h = x = y = l = z = 0;
       taskFlag = 0;
     }
   }
@@ -108,10 +109,10 @@ void findBlock(uint8_t xMin, uint8_t xMax, uint8_t yMin, uint8_t yMax)
     if (xVelocity == 0 && yVelocity == 0)
       break;
     // 限制xVelocity和yVelocity的绝对值不小于10
-    if (abs(xVelocity) < 20 && xVelocity != 0)
-      xVelocity = (xVelocity > 0) ? 20 : -20;
-    if (abs(yVelocity) < 20 && yVelocity != 0)
-      yVelocity = (yVelocity > 0) ? 20 : -20;
+    if (abs(xVelocity) < 15 && xVelocity != 0)
+      xVelocity = (xVelocity > 0) ? 15 : -15;
+    if (abs(yVelocity) < 15 && yVelocity != 0)
+      yVelocity = (yVelocity > 0) ? 15 : -15;
     hexapod.velocity_cal(xVelocity, yVelocity, 0);
     hexapodMove();
   }
@@ -195,9 +196,6 @@ void putBall()
   delay(1000);
 }
 
-
-
-
 void setup()
 {
   // arm.setDEV(3, -5);
@@ -261,15 +259,12 @@ void setup()
   arm.pSerial2 = &Serial2;
   gait_prg.Init();
   delay(100);
-    // Mpu.mpu_Init();
+  Mpu.mpu_Init();
   hexapod.Init(0);
   arm.servoMove(20, 20, 1000);
   arm.servoMove(21, 50, 1000);
-
-  delay(3000);
-
+  delay(1000);
   hexapod.mode_select(1);
-
   // while (1)
   // {
   //   for (int i = 0; i < 19; i++)
@@ -298,7 +293,7 @@ void setup()
   //   param.width = 9;
   //   param.height = 12;
   //   /* Set blob1 color */
-  //   param.label = Sentry::kColorBlue;
+  //   param.label = Sentry::kColorRed;
   //   sentry.SetParam(Sentry::kVisionBlob, &param, 1);
   //   delay(10);
   // }
@@ -332,7 +327,7 @@ void setup()
   // turnForward();
   // hexapod.velocity_cal(-60, 0, 0); // 向左直到对准大门
   // preTime = millis();
-  // while (millis() - preTime < 5500) //
+  // while (millis() - preTime < 3500) //
   // {
   //   hexapodMove();
   // }
@@ -366,7 +361,7 @@ void setup()
   //   param.width = 9;
   //   param.height = 12;
   //   /* Set blob1 color */
-  //   param.label = Sentry::kColorBlue;
+  //   param.label = Sentry::kColorRed;
   //   sentry.SetParam(Sentry::kVisionBlob, &param, 1);
   //   delay(10);
   // }
@@ -427,27 +422,27 @@ void loop()
   if (PS4.Up())
   {
     hexapod.mode_select(1);
-    hexapod.velocity_cal(0, 40, 0);
+    hexapod.velocity_cal(0, 60, 0);
     // Mpu.mpu_cab();
     hexapodMove();
   }
   else if (PS4.Down())
   {
     hexapod.mode_select(1);
-    hexapod.velocity_cal(0, -40, 0);
+    hexapod.velocity_cal(0, -60, 0);
     // Mpu.mpu_cab();
     hexapodMove();
   }
   else if (PS4.Left())
   {
     hexapod.mode_select(1);
-    hexapod.velocity_cal(-40, 0, 0);
+    hexapod.velocity_cal(-60, 0, 0);
     hexapodMove();
   }
   else if (PS4.Right())
   {
     hexapod.mode_select(1);
-    hexapod.velocity_cal(40, 0, 0);
+    hexapod.velocity_cal(60, 0, 0);
     hexapodMove();
   }
   else if (PS4.Circle())
@@ -501,7 +496,7 @@ void loop()
   else if (PS4.R2())
   {
     gait_prg.set_theta_stand_2(65);
-    gait_prg.set_theta_stand_3(-120 );
+    gait_prg.set_theta_stand_3(-120);
     gait_prg.Init();
   }
   else if (PS4.Share())

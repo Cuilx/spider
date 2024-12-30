@@ -61,7 +61,7 @@ private:
     float theta_stand_3;
 public:
     action actions[6];
-    Gait_prg() : theta_stand_2(1.0f / 180.0f * PI), theta_stand_3(-100.0f / 180.0f * PI) {}
+    Gait_prg() : theta_stand_2(1.0f / 180.0f * PI), theta_stand_3(-90.0f / 180.0f * PI) {}
     void Init(); // 初始化
     void CEN_and_pace_cal();
     void gait_proggraming();
