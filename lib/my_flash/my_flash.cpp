@@ -49,6 +49,7 @@ void bootTask()
   Serial.println("===================================================");
 
   getServoPos(servoPOS);
+  getDev(servoDev);
   while (1)
   {
     if (Serial.available())
@@ -100,7 +101,6 @@ void bootTask()
         for(int i=0;i<21;i++){
           arm.servoMove(i+1,150,1000);
         }
-        setDev(servoDev);
       }
       else 
       {
